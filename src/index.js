@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import {
   getFirestore, collection, getDocs,
-  addDoc,
+  addDoc, deleteDoc, doc,
 } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -39,7 +39,7 @@ getDocs(colRef)
   });
 
 
-// adding documents
+// adding documents functionality
 const addBookForm = document.querySelector('.add');
 addBookForm.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -55,9 +55,18 @@ addBookForm.addEventListener('submit', (e) => {
 
 })
 
+// deleting document functionality
 const deleteBookForm = document.querySelector('.delete');
 deleteBookForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
-  
+  // firebase doc function, which accesses a specific document, takes 3 arguments
+  const docRef = doc(db, 'books', deleteBookForm.id.value);
+
+  deleteDoc(docRef)
+    .then(() => {
+      deleteBookForm.reset();
+    });
+
+
 });
