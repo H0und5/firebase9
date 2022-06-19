@@ -1,7 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import {
-  getFirestore, collection, getDocs,
+  getFirestore, collection, onSnapshot,
   addDoc, deleteDoc, doc,
+  query, where, 
 } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -24,19 +25,19 @@ const db = getFirestore();
 // collections ref
 const colRef = collection(db, 'books');
 
-// get collection data
-getDocs(colRef)
-  .then((snapshot) => {
-    let books = [];
+// queries
+const q = query(colRef, where("author", "==", "Kat Holmes"))
 
-    snapshot.docs.forEach((doc) => {
-      books.push({ ...doc.data(), id: doc.id })
-    })
-    console.log(books)
+// get collection data
+onSnapshot(q, (snapshot) => {
+  let books = [];
+
+  snapshot.docs.forEach((doc) => {
+    books.push({ ...doc.data(), id: doc.id })
   })
-  .catch(err => {
-    console.log(err.message)
-  });
+  
+  console.log(books)
+})
 
 
 // adding documents functionality
