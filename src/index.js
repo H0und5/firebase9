@@ -1,12 +1,18 @@
 import { initializeApp } from 'firebase/app';
+
 import {
   getFirestore, collection, onSnapshot,
   addDoc, deleteDoc, doc,
   query, where, 
   orderBy, serverTimestamp,
-  getDoc,
+  getDoc, updateDoc,
 } from 'firebase/firestore';
 
+import {
+  getAuth
+} from 'firebase/auth';
+
+// config credentials
 const firebaseConfig = {
   apiKey: "AIzaSyA0QeL9lAeRtzFgHWrkxkukykI7q7NVvx0",
   authDomain: "fir-9-41660.firebaseapp.com",
@@ -23,6 +29,7 @@ initializeApp(firebaseConfig);
 
 // init services
 const db = getFirestore();
+const auth = getAuth();
 
 // collections ref
 const colRef = collection(db, 'books');
@@ -76,3 +83,33 @@ deleteBookForm.addEventListener('submit', (e) => {
 });
 
 // get a single document
+const docRef = doc(db, 'books', 'GFV9UZWUPdY88bmdq4lF');
+
+getDoc(docRef)
+  .then((doc) => {
+    console.log(doc.data(), doc.id)
+  })
+
+  onSnapshot(docRef, (doc) => {
+    console.log(doc.data(), doc.id)
+  })
+
+
+// updating a document
+
+const updateBookForm = document.querySelector('.update');
+
+updateBookForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const docRef = doc(db, 'books', updateBookForm.id.value);
+
+  updateDoc(docRef, {
+    title: 'title update',
+  })
+    .then(() => {
+      updateBookForm.reset();
+    })
+  
+
+})
