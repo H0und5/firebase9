@@ -5,11 +5,13 @@ import {
   addDoc, deleteDoc, doc,
   query, where, 
   orderBy, serverTimestamp,
-  getDoc, updateDoc,
+  getDoc, updateDoc
 } from 'firebase/firestore';
 
 import {
-  getAuth
+  getAuth,
+  createUserWithEmailAndPassword,
+  signOut
 } from 'firebase/auth';
 
 // config credentials
@@ -111,5 +113,46 @@ updateBookForm.addEventListener('submit', (e) => {
       updateBookForm.reset();
     })
   
+
+})
+
+
+// signing up a user
+const signUpForm = document.querySelector('.signup');
+
+signUpForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const email = signUpForm.email.value;
+  const password = signUpForm.password.value;
+
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((cred) => {
+      console.log('user created:', cred.user);
+      signUpForm.reset();
+    })
+    .catch((err) => {
+      console.log(err.message);
+    })
+
+})
+
+
+// log out functionality
+const logoutButton = document.querySelector('.logout');
+
+logoutButton.addEventListener('click', () => {
+
+
+
+})
+
+
+// login form functionality
+const loginForm = document.querySelector('.login');
+
+loginForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
 
 })
